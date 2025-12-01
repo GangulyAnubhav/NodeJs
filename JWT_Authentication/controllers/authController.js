@@ -16,7 +16,7 @@ exports.login = (req, res) => {
   
   // Checking is username or password in blank or not.
   if (!username || !password) {
-      return res.status(400).json({ message: "Provide username and password" });
+    return res.status(400).json({ message: "Provide username and password" });
   }
 
   // Checking credential details
@@ -30,7 +30,9 @@ exports.login = (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY);
 
   // Set cookie (httpOnly so JS can't access it), sameSite Lax for typical flows
-  res.cookie(COOKIE_NAME, token);
+  res.cookie(COOKIE_NAME, token, {
+    maxAge: 60000
+  });
 
   return res.json({ message: "Login successful" });
 };
