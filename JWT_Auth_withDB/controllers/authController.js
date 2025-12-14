@@ -12,51 +12,47 @@ const login = (req, res) => {
     }
 
     // Check if user exists in logged_in_users table
-    db.query(
-        "SELECT * FROM logged_in_users WHERE username = ? AND password = ?",
-        [username, password],
-        (err, result) => {
-            if (err) return res.status(500).json({ message: "Database error" });
+    const sql = "SELECT * FROM logged_in_users WHERE username = ? AND password = ?";
 
-            if (result.length === 0) {
-                // User not found → insert new record
-                db.query(
-                    "INSERT INTO logged_in_users (username, password) VALUES (? , ?)",
-                    [username, password],
-                    (err2, insertResult) => {
-                        if (err2) return res.status(500).json({ message: "Failed to add user" });
+    db.query( sql, [username, password], (err, result) => {
+        if (err) return res.status(500).json({ message: "Database error" });
 
-                        const newUserId = insertResult.insertId;
-                        const payload = { id: newUserId, username: username };
+        if (result.length === 0) {
+            // User not found → insert new record
+            const sql = "INSERT INTO logged_in_users (username, password) VALUES (?, ?)";
+            db.query( sql, [username, password], (err2, insertResult) => {
+                if (err2) return res.status(500).json({ message: "Failed to add user" });
 
-                        // 3. Create JWT token
-                        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2min" });
+                const newUserId = insertResult.insertId;
+                const payload = { id: newUserId, username: username };
 
-                        // 4. Save token to cookie
-                        res.cookie(COOKIE_NAME, token, {
-                            httpOnly: true,
-                            maxAge: 120000
-                        });
-
-                        return res.json({ message: "New user added and login successful", token });
-                    }
-                );
-            } else {
-                // User already exists
-                const user = result[0];
-                const payload = { id: user.id, username: user.username };
-
+                // 3. Create JWT token
                 const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2min" });
 
+                // 4. Save token to cookie
                 res.cookie(COOKIE_NAME, token, {
                     httpOnly: true,
-                    maxAge: 300000
+                    maxAge: 120000
                 });
 
-                return res.json({ message: "Login successful"});
-            }
+                return res.json({ message: "New user added and login successful", token });
+                
+            });
+        } else {
+            // User already exists
+            const user = result[0];
+            const payload = { id: user.id, username: user.username };
+
+            const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2min" });
+
+            res.cookie(COOKIE_NAME, token, {
+                httpOnly: true,
+                maxAge: 300000
+            });
+
+            return res.json({ message: "Login successful"});
         }
-    );
+    });
 };
 
 
