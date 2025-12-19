@@ -27,15 +27,15 @@ const login = (req, res) => {
                 const payload = { id: newUserId, username: username };
 
                 // 3. Create JWT token
-                const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2min" });
+                const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5min" });
 
                 // 4. Save token to cookie
                 res.cookie(COOKIE_NAME, token, {
                     httpOnly: true,
-                    maxAge: 120000
+                    maxAge: 300000
                 });
 
-                return res.json({ message: "New user added and login successful", token });
+                return res.json({ message: "New user added and login successful" });
                 
             });
         } else {
@@ -43,7 +43,7 @@ const login = (req, res) => {
             const user = result[0];
             const payload = { id: user.id, username: user.username };
 
-            const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2min" });
+            const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5min" });
 
             res.cookie(COOKIE_NAME, token, {
                 httpOnly: true,
