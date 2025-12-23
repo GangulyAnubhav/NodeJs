@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d70b750f-c228-41bd-af40-8edc5d74f0ff/resourceGroups/rg-azure-node-dev/providers/Microsoft.Web/sites/JWT-Auth-withDB",
+    "appService.deploySubpath": ".",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}
