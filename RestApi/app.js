@@ -13,7 +13,7 @@ app.use('/', userRouter);
 
 // Health check route (VERY useful on Azure)
 app.get('/', (req, res) => {
-  res.send('Node.js API running on Azure and connected with APIM 🚀');
+  res.send('Node.js API running on Azure and connected with APIM........... 🚀');
 });
 
 app.listen(PORT, () => {
