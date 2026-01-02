@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
-const db = require('../config/db')
 
-const SECRET_KEY = 'Anubhav@123'
-const COOKIE_NAME = 'jwtToken'
+const JWT_SECRET ='uY5Z5pZ3vC1kE2y3G6oM1u+9R8h1xFzJ4ZJvT9YxKQw='
+
+const SECRET_KEY = Buffer.from(JWT_SECRET, "base64");
 
 const login = (req, res) => {
     const { username, password } = req.body;
@@ -11,22 +11,21 @@ const login = (req, res) => {
         return res.status(400).json({ message: "Provide username and password" });
     }
 
-    // Checking credential details
-    if (username !== user.username || password !== user.password) {
-        return res.status(401).json({ message: "Invalid credentials" });
-    }
-
     // Create token payload and sign
-      const payload = { id: "1", username: user.username };
-      //Generating a JWT token
-      const token = jwt.sign(payload, SECRET_KEY);
-    
-      // Set cookie (httpOnly so JS can't access it), sameSite Lax for typical flows
-      res.cookie(COOKIE_NAME, token, {
-        maxAge: 60000
-      });
-    
-      return res.json({ message: "Login successful" });
+    const payload = { id: "1", username };
+    //Generating a JWT token
+    const token = jwt.sign(payload, SECRET_KEY,{
+        algorithm: "HS256",
+        expiresIn: "1h",
+        issuer: "https://restapi.com",
+        audience: "jwt-auth-api"
+        }
+    );
+
+    return res.json({ 
+        message: "Login successful",
+        token: token
+     });
 }
 
 module.exports = {
