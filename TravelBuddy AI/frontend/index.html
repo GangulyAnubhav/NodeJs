@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Buddy AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Travel Buddy AI</h1>
+    <p class="subtitle">Your personal AI trip planner</p>
+
+    <div class="form-card">
+
+        <label>From</label>
+        <input type="text" id="origin" placeholder="e.g. Kolkata">
+
+        <label>Destination</label>
+        <input type="text" id="destination" placeholder="e.g. Goa">
+
+        <label>Number of Days</label>
+        <input id="days" placeholder="e.g. 4">
+
+        <label>Travel Style</label>
+        <select type="dropdown" id="style">
+            <option value="budget">Budget</option>
+            <option value="luxury">Luxury</option>
+            <option value="adventure">Adventure</option>
+            <option value="family">Family</option>
+            <option value="honeymoon">Honeymoon</option>
+        </select>
+        
+        <label>Special Request</label>
+        <input type="text" id="specialRequest" placeholder="e.g. Beachfront accommodation, local cuisine, etc.">
+
+        <button onclick="planTrip()">Plan My Trip ✈️</button>
+    </div>
+
+    <div id="result" class="result-box"></div>
+
+</div>
+
+<script src="app.js"></script>
+<script src="header.js"></script>
+
+</body>
+</html>
