@@ -4,7 +4,7 @@ const currentPage = window.location.pathname.split("/").pop();
 
 const header = `
     <nav class="navbar">
-        <div class="logo">✈️ TravelBuddy AI</div>
+        <div class="logo"> TravelBuddy AI</div>
         <ul class="nav-links">
             <li><a href="index.html" id="homeLink">Home</a></li>
             <li><a href="about.html" id="aboutLink">About Us</a></li>

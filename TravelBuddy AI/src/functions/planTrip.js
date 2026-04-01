@@ -30,15 +30,15 @@ app.http('planTrip', {
 
             // 4. Structuring Prompt Building
             const prompt = `
-                Generate a detailed ${days}-day itinerary for a "${style}" trip to ${destination}.
+                Create a ${days}-day travel itinerary for a "${style}" trip to ${destination}.
 
-                Trip Requirements:
-                - The entire itinerary must strictly follow the "${style}" vibe.
-                - Include places mentioned in this special request: "${specialRequest}".
-                - Ensure the special request locations are properly distributed across the itinerary.
-                - Suggest travel modes and budget strategy according to the trip style.
+                Requirements:
+                - Follow the "${style}" travel style.
+                - Include places from this special request: "${specialRequest}".
+                - Distribute those places across the itinerary.
+                - Suggest transport options and budget-friendly tips based on the style.
 
-                Return response ONLY in valid JSON format (no extra text):
+                Return ONLY valid JSON in this format:
 
                 {
                 "tripTitle": "string",
@@ -49,12 +49,12 @@ app.http('planTrip', {
                 "budgetSummary": {
                     "estimatedBudgetLevel": "Low | Moderate | Luxury",
                     "costManagementTips": ["Tip 1", "Tip 2"],
-                    "averageDailyEstimatedCost": "Approximate cost per person per day in local currency"
+                    "averageDailyEstimatedCost": "Cost per person per day"
                 },
 
                 "recommendedTransport": {
-                    "localTransportModes": ["Metro", "Public Transport", "Private Cab"],
-                    "airportTransfers": "Suggested airport transfer option",
+                    "localTransportModes": ["Transport 1", "Transport 2"],
+                    "airportTransfers": "Airport transfer suggestion",
                     "intercityTravelIfAny": "Details if applicable"
                 },
 
@@ -62,26 +62,26 @@ app.http('planTrip', {
                     {
                     "name": "Hotel Name",
                     "category": "Budget | Mid-range | Luxury",
-                    "reason": "Why this hotel matches the trip style"
+                    "reason": "Why it matches the trip style"
                     }
                 ],
 
                 "itinerary": [
                     {
-                    "day": 1,
-                    "theme": "Short theme for the day based on style",
-                    "activities": [
-                        {
-                        "timeOfDay": "Morning | Afternoon | Evening",
-                        "title": "Activity name",
-                        "description": "1–2 sentence description matching the trip style",
-                        "estimatedCost": "Approximate cost or Free",
-                        "transportSuggestion": "How to reach this place"
-                        }
-                    ]
+                        "day": 1,
+                        "theme": "Short theme for the day",
+                        "activities": [
+                            {
+                                "timeOfDay": "Morning | Afternoon | Evening",
+                                "title": "Activity name",
+                                "description": "Short description",
+                                "estimatedCost": "Cost or Free",
+                                "transportSuggestion": "How to reach"
+                            }
+                        ]
                     }
                 ]
-                }
+            }
             `;
 
             const result = await model.generateContent(prompt);
@@ -90,6 +90,7 @@ app.http('planTrip', {
             // 5. Clean & Parse JSON
             const cleanJson = text.replace(/```json|```/g, "").trim();
             const travelData = JSON.parse(cleanJson);
+            // console.log(JSON.stringify(travelData.itinerary[0].activities, null, 2));
 
             return {
                 status: 200,

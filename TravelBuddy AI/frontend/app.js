@@ -30,15 +30,33 @@ try {
     // Trip title 
     let html = `<h2>${trip.tripTitle}</h2>`; html += `<p><b>Travel Style:</b> ${trip.styleApplied}</p><hr>`; 
     
-    // Loop itinerary 
-    trip.itinerary.forEach(day => { 
-        html += `<h3>Day ${day.day}</h3><ul>`; 
-        
-        day.activities.forEach(activity => { 
-            html += `<li>${activity}</li>`; 
-        }); 
-        html += `</ul>`; 
-    }); 
+    // Loop itinerary
+    trip.itinerary.forEach(day => {
+
+        html += `
+        <div class="day-card">
+            <h3>Day ${day.day}</h3>
+            <p class="day-theme">${day.theme}</p>
+        `;
+
+        day.activities.forEach(activity => {
+            html += `
+            <div class="activity-card">
+                <div class="time">${activity.timeOfDay}</div>
+                <div class="activity-details">
+                    <h4>${activity.title}</h4>
+                    <p>${activity.description}</p>
+                    <p class="meta">
+                        💰 ${activity.estimatedCost} &nbsp; | &nbsp; 🚗 ${activity.transportSuggestion}
+                    </p>
+                </div>
+            </div>
+            `;
+        });
+
+        html += `</div>`;
+    });
+
     resultDiv.innerHTML = html;
 
 } catch (error) {
